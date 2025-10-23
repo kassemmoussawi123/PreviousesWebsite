@@ -104,6 +104,8 @@ export function AdminDashboard({ courses: initialCourses }: AdminDashboardProps)
           file_size: size,
           semester: materialForm.semester,
           year: Number.parseInt(materialForm.year),
+          source: "manual",
+          metadata: null,
         },
       ])
 

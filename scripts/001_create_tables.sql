@@ -19,6 +19,9 @@ CREATE TABLE IF NOT EXISTS materials (
   file_size INTEGER,
   semester VARCHAR(20),
   year INTEGER,
+  source TEXT NOT NULL DEFAULT 'manual',
+  external_id TEXT UNIQUE,
+  metadata JSONB,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
@@ -26,6 +29,8 @@ CREATE TABLE IF NOT EXISTS materials (
 CREATE INDEX IF NOT EXISTS idx_materials_course_id ON materials(course_id);
 CREATE INDEX IF NOT EXISTS idx_courses_code ON courses(code);
 CREATE INDEX IF NOT EXISTS idx_materials_type ON materials(type);
+CREATE INDEX IF NOT EXISTS idx_materials_source ON materials(source);
+CREATE INDEX IF NOT EXISTS idx_materials_external_id ON materials(external_id);
 
 -- Insert some sample courses
 INSERT INTO courses (code, name, department, description) VALUES

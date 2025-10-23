@@ -28,3 +28,45 @@ Continue building your app on:
 2. Deploy your chats from the v0 interface
 3. Changes are automatically pushed to this repository
 4. Vercel deploys the latest version from this repository
+
+## Importing course materials from Google Drive
+
+This project now includes a CLI utility that can synchronise a structured Google Drive folder with the Supabase database used by the site. The importer preserves folder context in the material metadata so that files remain organised after the migration.
+
+### 1. Prepare a service account
+
+1. Create a Google Cloud project (or reuse an existing one) and enable the **Google Drive API**.
+2. Create a service account and download its JSON key.
+3. Share the root Drive folder (or individual subfolders) with the service account email so it can read the files.
+
+### 2. Set the required environment variables
+
+Add the following entries to your environment (for example inside `.env.local` when running locally or in your deployment provider):
+
+```bash
+GOOGLE_SERVICE_ACCOUNT_EMAIL="service-account@project.iam.gserviceaccount.com"
+GOOGLE_SERVICE_ACCOUNT_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
+GOOGLE_DRIVE_ROOT_FOLDER_ID="1p2TBoh1dOdq1ADjIZDWlsX-bebUfvW6_"
+SUPABASE_URL="https://your-project.supabase.co"
+SUPABASE_SERVICE_ROLE_KEY="your-service-role-key"
+```
+
+> **Note:** keep the private key formatted as a single line string in environment variables. The import script automatically restores the line breaks.
+
+### 3. Run the importer
+
+With the environment variables in place, execute:
+
+```bash
+node scripts/import-google-drive.js
+```
+
+The script assumes the following Drive structure:
+
+- The root folder contains one sub-folder per department (for example `Computer Science`, `Mathematics`, ...).
+- Each department folder contains course folders named like `CMPS 200 - Introduction to Computer Science`.
+- Any files or nested folders inside a course folder will be imported. Nested folders are used to infer the material type (exam, quiz, notes, etc.) and stored under `metadata.path` for later reference.
+
+### 4. Manual uploads remain supported
+
+The admin dashboard keeps the ability to add courses and upload individual files manually. Manually uploaded files are tagged with the `manual` source, whereas imported items receive the `google-drive` source label.
