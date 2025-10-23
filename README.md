@@ -16,6 +16,19 @@ Your project is live at:
 
 **[https://vercel.com/kassemmoussawi123s-projects/v0-drive-to-website-folder](https://vercel.com/kassemmoussawi123s-projects/v0-drive-to-website-folder)**
 
+To trigger a fresh deployment from your local environment:
+
+1. Install dependencies and produce a production build locally to verify everything works:
+   ```bash
+   pnpm install
+   pnpm run build
+   ```
+2. Ensure the required environment variables (such as the Supabase keys and Google Drive credentials listed below) are present in your Vercel project settings under **Settings → Environment Variables**.
+3. Push your changes to the `work` branch (or whichever branch is connected to Vercel). Vercel will automatically build and redeploy the application.
+4. If you prefer using the Vercel CLI, log in with `pnpm dlx vercel login` and run `pnpm dlx vercel --prod` from the project root to publish the latest build.
+
+> **Note:** This environment cannot perform the live deployment itself, so follow the steps above from your machine to refresh the hosted site and obtain the public URL.
+
 ## Build your app
 
 Continue building your app on:
